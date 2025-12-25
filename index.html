@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <title>ExpatFlow Master</title>
+    <title>ExpatFlow Mobile</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,10 +23,9 @@
             overscroll-behavior-y: none;
         }
 
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
-
+        /* 移除預設輸入框樣式 */
+        input::-webkit-inner-spin-button, input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
         select {
             -webkit-appearance: none; appearance: none;
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23D97706%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2082.2c3.6-3.6%205.4-7.8%205.4-12.8%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -80,18 +79,14 @@
             border-radius: 10px; margin: 0 auto 20px auto;
         }
 
-        /* --- 2. Logo 金屬質感 CSS --- */
+        /* Logo 金屬質感 */
         .text-metal-silver {
             background: linear-gradient(to bottom, #E2E8F0 0%, #94A3B8 50%, #E2E8F0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
         }
         .text-metal-gold {
             background: linear-gradient(to bottom, #FDE68A 0%, #D97706 50%, #FDE68A 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
         }
     </style>
 </head>
@@ -117,7 +112,6 @@
     </header>
 
     <main class="flex-1 overflow-y-auto hide-scrollbar px-5 pb-32">
-        
         <div id="history-indicator" class="hidden mb-4 flex justify-center">
             <span class="text-[10px] bg-amber-900/40 text-amber-500 border border-amber-500/30 px-3 py-1 rounded-full uppercase tracking-widest animate-pulse">
                 <i class="fas fa-clock mr-1"></i> VIEWING: <span id="history-label">--</span>
@@ -230,14 +224,20 @@
                     <div id="input-area-standard" class="text-center py-4">
                         <div class="relative inline-block w-full">
                             <span id="currency-symbol" class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-amber-500 font-light">₫</span>
-                            <input type="number" id="inp-amount" placeholder="0" class="w-full bg-transparent text-5xl text-white font-mono-num font-light text-center border-none focus:outline-none placeholder-slate-800 p-2">
+                            <input type="text" inputmode="decimal" pattern="[0-9]*" id="inp-amount" placeholder="0" class="w-full bg-transparent text-5xl text-white font-mono-num font-light text-center border-none focus:outline-none placeholder-slate-800 p-2">
                         </div>
                         <div class="h-[1px] w-3/4 bg-gradient-to-r from-transparent via-slate-600 to-transparent mx-auto mt-2"></div>
                     </div>
 
                     <div id="input-area-golf" class="hidden grid-cols-2 gap-4">
-                        <div><label class="text-[10px] text-slate-400 uppercase ml-1" data-i18n="green_fee">Green Fee</label><input type="number" id="inp-golf-fee" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num" placeholder="0"></div>
-                        <div><label class="text-[10px] text-slate-400 uppercase ml-1" data-i18n="caddie_tip">Caddie / Tip</label><input type="number" id="inp-golf-tip" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num" placeholder="0"></div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase ml-1" data-i18n="green_fee">Green Fee</label>
+                            <input type="text" inputmode="decimal" pattern="[0-9]*" id="inp-golf-fee" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num" placeholder="0">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase ml-1" data-i18n="caddie_tip">Caddie / Tip</label>
+                            <input type="text" inputmode="decimal" pattern="[0-9]*" id="inp-golf-tip" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num" placeholder="0">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-3">
@@ -267,8 +267,14 @@
                             <i class="fas fa-arrow-right text-amber-500 mt-5"></i>
                             <div><label class="text-[10px] text-slate-400 uppercase block mb-1">To</label><select id="exc-to" class="input-premium w-full p-3 rounded-lg font-bold"><option value="VND">VND</option><option value="TWD">TWD</option><option value="USD">USD</option></select></div>
                         </div>
-                        <div><label class="text-[10px] text-slate-400 uppercase block mb-1" data-i18n="amount">Amount</label><input type="number" id="exc-amount" placeholder="0" class="input-premium w-full p-3 rounded-lg text-xl font-mono-num"></div>
-                        <div><label class="text-[10px] text-slate-400 uppercase block mb-1" data-i18n="rate">Exchange Rate</label><input type="number" id="exc-rate" placeholder="e.g. 25400" class="input-premium w-full p-3 rounded-lg text-xl font-mono-num text-amber-500"></div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase block mb-1" data-i18n="amount">Amount</label>
+                            <input type="text" inputmode="decimal" pattern="[0-9]*" id="exc-amount" placeholder="0" class="input-premium w-full p-3 rounded-lg text-xl font-mono-num">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase block mb-1" data-i18n="rate">Exchange Rate</label>
+                            <input type="text" inputmode="decimal" pattern="[0-9]*" id="exc-rate" placeholder="e.g. 25400" class="input-premium w-full p-3 rounded-lg text-xl font-mono-num text-amber-500">
+                        </div>
                         <div class="text-right pt-2 border-t border-white/10">
                             <span class="text-xs text-slate-500" data-i18n="received">Total Received:</span><span id="exc-result" class="text-white text-lg font-bold ml-2 font-mono-num">0</span>
                         </div>
@@ -289,18 +295,40 @@
                 <div>
                     <h3 class="text-xs text-amber-500 uppercase tracking-widest mb-4" data-i18n="set_allowance">Flight Allowance</h3>
                     <div class="space-y-4">
-                        <div><label class="text-[10px] text-slate-400 block mb-1" data-i18n="set_total">Total Amount</label><input type="number" id="set-allowance-amount" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num"></div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1" data-i18n="set_total">Total Amount</label>
+                            <input type="text" inputmode="decimal" id="set-allowance-amount" class="input-premium w-full p-3 rounded-lg text-lg font-mono-num">
+                        </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div><label class="text-[10px] text-slate-400 block mb-1" data-i18n="set_curr">Currency</label><select id="set-allowance-currency" class="input-premium w-full p-3 rounded-lg"><option value="USD">USD</option><option value="VND">VND</option><option value="TWD">TWD</option></select></div>
-                            <div><label class="text-[10px] text-slate-400 block mb-1" data-i18n="set_tax">Tax Rate (%)</label><input type="number" id="set-tax-rate" class="input-premium w-full p-3 rounded-lg font-mono-num"></div>
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1" data-i18n="set_tax">Tax Rate (%)</label>
+                                <input type="text" inputmode="decimal" id="set-tax-rate" class="input-premium w-full p-3 rounded-lg font-mono-num">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-xs text-amber-500 uppercase tracking-widest mb-4" data-i18n="set_rates">System Rates (to VND)</h3>
                     <div class="space-y-4">
-                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-lg border border-white/5"><span class="text-sm font-bold">1 USD =</span><input type="number" id="set-rate-usd" class="bg-transparent text-right text-white font-mono-num outline-none border-b border-white/20 w-32 focus:border-amber-500"></div>
-                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-lg border border-white/5"><span class="text-sm font-bold">1 TWD =</span><input type="number" id="set-rate-twd" class="bg-transparent text-right text-white font-mono-num outline-none border-b border-white/20 w-32 focus:border-amber-500"></div>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-lg border border-white/5">
+                            <span class="text-sm font-bold">1 USD =</span>
+                            <input type="text" inputmode="decimal" id="set-rate-usd" class="bg-transparent text-right text-white font-mono-num outline-none border-b border-white/20 w-32 focus:border-amber-500">
+                        </div>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-lg border border-white/5">
+                            <span class="text-sm font-bold">1 TWD =</span>
+                            <input type="text" inputmode="decimal" id="set-rate-twd" class="bg-transparent text-right text-white font-mono-num outline-none border-b border-white/20 w-32 focus:border-amber-500">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xs text-amber-500 uppercase tracking-widest mb-4">DATA MANAGEMENT</h3>
+                    <div class="flex gap-3">
+                        <button onclick="exportData()" class="flex-1 bg-white/10 text-slate-300 py-3 rounded-lg text-xs font-bold uppercase hover:bg-white/20">BACKUP (Export)</button>
+                        <label class="flex-1 bg-white/10 text-slate-300 py-3 rounded-lg text-xs font-bold uppercase hover:bg-white/20 text-center cursor-pointer">
+                            RESTORE (Import)
+                            <input type="file" id="import-file" class="hidden" onchange="importData(this)">
+                        </label>
                     </div>
                 </div>
                 <button onclick="saveSettings()" class="btn-gold w-full py-4 rounded-xl mt-8"><span data-i18n="btn_save">SAVE CONFIGURATION</span></button>
@@ -316,7 +344,6 @@
             <div class="space-y-6" id="charts-container"></div>
         </div>
     </div>
-
     <div id="history-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center p-6 backdrop-blur-md">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl relative">
             <button onclick="closeHistory()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
@@ -364,7 +391,9 @@
         let currentCategory = 'daily';
         let currentTab = 'expenses';
         let currentViewDate = new Date();
-        let editingId = null; // State for Editing
+        let editingId = null;
+
+        const vibrate = (ms = 15) => { if(navigator.vibrate) navigator.vibrate(ms); }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('inp-date').valueAsDate = new Date();
@@ -373,14 +402,27 @@
             updateUI();
             setupHistoryYears();
             
-            const calcExchange = () => {
-                const amt = parseFloat(document.getElementById('exc-amount').value) || 0;
-                const rate = parseFloat(document.getElementById('exc-rate').value) || 0;
-                document.getElementById('exc-result').innerText = formatNum(amt * rate);
+            // Format Inputs
+            const formatInput = (e) => {
+                let val = e.target.value.replace(/\D/g, ""); // Remove non-digits
+                if(val) e.target.value = parseInt(val).toLocaleString('en-US');
             };
-            document.getElementById('exc-amount').addEventListener('input', calcExchange);
-            document.getElementById('exc-rate').addEventListener('input', calcExchange);
+            
+            ['inp-amount', 'exc-amount', 'exc-rate', 'inp-golf-fee', 'inp-golf-tip'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.addEventListener('input', formatInput);
+                    if(id === 'exc-amount' || id === 'exc-rate') {
+                        el.addEventListener('input', () => {
+                            const amt = getRawValue('exc-amount');
+                            const rate = getRawValue('exc-rate');
+                            document.getElementById('exc-result').innerText = formatNum(amt * rate);
+                        });
+                    }
+                }
+            });
 
+            // Swipe to Close
             const modalPanel = document.getElementById('modal-panel');
             let touchStartY = 0;
             modalPanel.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive: true});
@@ -394,7 +436,12 @@
             });
         });
 
+        function getRawValue(id) {
+            return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0;
+        }
+
         function toggleLang() {
+            vibrate();
             config.lang = config.lang === 'en' ? 'zh' : 'en';
             localStorage.setItem('expat_config', JSON.stringify(config));
             applyLanguage(config.lang); updateUI();
@@ -405,7 +452,6 @@
             document.querySelectorAll('[data-i18n]').forEach(el => el.innerText = t[el.getAttribute('data-i18n')]);
             document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t[el.getAttribute('data-i18n-ph')]);
             document.getElementById('lang-btn-text').innerText = lang === 'en' ? 'EN / 中' : '中 / EN';
-            // Logic for dynamic buttons
             document.getElementById('btn-submit-text').innerText = editingId ? t.btn_update : t.btn_confirm;
             document.getElementById('modal-title').innerText = editingId ? t.edit_record : t.new_record;
         }
@@ -478,7 +524,6 @@
 
             sorted.forEach((item) => {
                 const div = document.createElement('div');
-                // 3. 點選修改: 綁定 onclick 事件
                 const clickAction = currentTab === 'expenses' ? `onclick="openAddModal(${item.id})"` : '';
                 const cursor = currentTab === 'expenses' ? 'cursor-pointer active:scale-[0.98]' : '';
 
@@ -520,7 +565,7 @@
             });
         }
 
-        function openCharts() { document.getElementById('charts-modal').classList.remove('hidden'); renderCharts(); }
+        function openCharts() { vibrate(); document.getElementById('charts-modal').classList.remove('hidden'); renderCharts(); }
         function closeCharts() { document.getElementById('charts-modal').classList.add('hidden'); }
         function renderCharts() {
             const container = document.getElementById('charts-container');
@@ -548,6 +593,7 @@
         }
 
         function openHistory() {
+            vibrate();
             document.getElementById('history-modal').classList.remove('hidden');
             document.getElementById('hist-month').value = currentViewDate.getMonth();
             document.getElementById('hist-year').value = currentViewDate.getFullYear();
@@ -564,47 +610,46 @@
             }
         }
         function applyHistory() {
+            vibrate();
             const y = parseInt(document.getElementById('hist-year').value);
             const m = parseInt(document.getElementById('hist-month').value);
             currentViewDate = new Date(y, m, 1);
             updateUI(); closeHistory();
         }
-        function resetHistory() { currentViewDate = new Date(); updateUI(); closeHistory(); }
+        function resetHistory() { vibrate(); currentViewDate = new Date(); updateUI(); closeHistory(); }
 
         // --- ADD / EDIT LOGIC ---
         function openAddModal(id = null) {
+            vibrate();
             const modal = document.getElementById('add-modal');
             const panel = document.getElementById('modal-panel');
             const t = I18N[config.lang];
 
             if (id) {
-                // 3. EDIT MODE
+                // EDIT MODE
                 editingId = id;
                 const tx = transactions.find(t => t.id === id);
                 if (tx) {
                     setAddMode('expense');
                     setCategory(tx.category);
-                    document.getElementById('inp-amount').value = tx.originalAmount;
+                    document.getElementById('inp-amount').value = formatNum(tx.originalAmount); // Load formatted
                     document.getElementById('inp-note').value = tx.note || '';
-                    // Date (substring for YYYY-MM-DD)
                     if(tx.date) document.getElementById('inp-date').value = tx.date.split('T')[0];
-                    // Currency
                     document.getElementById(`rad-${tx.currency.toLowerCase()}`).checked = true;
                     updateCurrencyUI();
-                    // Golf Details
                     if (tx.category === 'golf' && tx.splitDetails) {
-                        document.getElementById('inp-golf-fee').value = tx.splitDetails.fee;
-                        document.getElementById('inp-golf-tip').value = tx.splitDetails.tip;
+                        document.getElementById('inp-golf-fee').value = formatNum(tx.splitDetails.fee);
+                        document.getElementById('inp-golf-tip').value = formatNum(tx.splitDetails.tip);
                     }
                     
                     document.getElementById('modal-title').innerText = t.edit_record;
                     document.getElementById('btn-submit-text').innerText = t.btn_update;
-                    document.getElementById('btn-delete').classList.remove('hidden'); // Show Delete
+                    document.getElementById('btn-delete').classList.remove('hidden'); 
                 }
             } else {
                 // ADD MODE
                 editingId = null;
-                // 1. CLEAR FIELDS FOR NEW RECORD
+                // 1. Clear Fields
                 document.getElementById('inp-amount').value = '';
                 document.getElementById('inp-note').value = '';
                 document.getElementById('inp-golf-fee').value = '';
@@ -614,7 +659,7 @@
                 
                 document.getElementById('modal-title').innerText = t.new_record;
                 document.getElementById('btn-submit-text').innerText = t.btn_confirm;
-                document.getElementById('btn-delete').classList.add('hidden'); // Hide Delete
+                document.getElementById('btn-delete').classList.add('hidden'); 
             }
 
             modal.classList.remove('hidden'); panel.style.transform = '';
@@ -629,6 +674,7 @@
         }
 
         function setAddMode(mode) {
+            vibrate();
             currentAddMode = mode;
             const bg = document.getElementById('segment-bg');
             if(mode === 'expense') {
@@ -640,6 +686,7 @@
             }
         }
         function setCategory(cat) {
+            vibrate();
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => { btn.classList.remove('bg-amber-500/20', 'border-amber-500'); btn.classList.add('bg-white/5', 'border-white/5'); });
             const active = document.getElementById(`btn-${cat}`);
@@ -648,34 +695,36 @@
             if(cat === 'golf') { stdInput.classList.add('hidden'); golfInput.classList.remove('hidden'); golfInput.classList.add('grid'); }
             else { stdInput.classList.remove('hidden'); golfInput.classList.remove('grid'); golfInput.classList.add('hidden'); }
         }
-        function updateCurrencyUI() { document.getElementById('currency-symbol').innerText = getCurrencySymbol(document.querySelector('input[name="currency"]:checked').value); }
-        function switchTab(tab) { currentTab = tab; updateUI(); }
+        function updateCurrencyUI() { 
+            vibrate();
+            document.getElementById('currency-symbol').innerText = getCurrencySymbol(document.querySelector('input[name="currency"]:checked').value); 
+        }
+        function switchTab(tab) { vibrate(); currentTab = tab; updateUI(); }
         
         function submitExpense() {
+            vibrate(30); // Success haptic
             const currency = document.querySelector('input[name="currency"]:checked').value;
             const note = document.getElementById('inp-note').value;
             const dateVal = document.getElementById('inp-date').value || new Date().toISOString();
             let originalAmount = 0, splitDetails = null;
 
             if (currentCategory === 'golf') {
-                const fee = parseFloat(document.getElementById('inp-golf-fee').value) || 0;
-                const tip = parseFloat(document.getElementById('inp-golf-tip').value) || 0;
+                const fee = getRawValue('inp-golf-fee');
+                const tip = getRawValue('inp-golf-tip');
                 if (fee + tip === 0) return;
                 originalAmount = fee + tip; splitDetails = { fee, tip };
             } else {
-                originalAmount = parseFloat(document.getElementById('inp-amount').value);
+                originalAmount = getRawValue('inp-amount');
                 if (!originalAmount) return;
             }
             const vndAmount = convertToVND(originalAmount, currency);
 
             if (editingId) {
-                // UPDATE EXISTING
                 const index = transactions.findIndex(t => t.id === editingId);
                 if (index !== -1) {
                     transactions[index] = { ...transactions[index], date: dateVal, category: currentCategory, currency, originalAmount, vndAmount, note, splitDetails };
                 }
             } else {
-                // CREATE NEW
                 transactions.push({ id: Date.now(), date: dateVal, category: currentCategory, currency, originalAmount, vndAmount, note, splitDetails });
             }
 
@@ -684,8 +733,8 @@
             updateUI();
         }
 
-        // 3. 刪除功能
         function deleteCurrentTransaction() {
+            vibrate(50);
             if (editingId && confirm("Are you sure you want to delete this record?")) {
                 transactions = transactions.filter(t => t.id !== editingId);
                 localStorage.setItem('expat_transactions_pro', JSON.stringify(transactions));
@@ -695,8 +744,9 @@
         }
 
         function submitExchange() {
+            vibrate(30);
             const from = document.getElementById('exc-from').value; const to = document.getElementById('exc-to').value;
-            const amount = parseFloat(document.getElementById('exc-amount').value); const rate = parseFloat(document.getElementById('exc-rate').value);
+            const amount = getRawValue('exc-amount'); const rate = getRawValue('exc-rate');
             if (!amount || !rate) return;
             exchanges.push({ id: Date.now(), date: new Date().toISOString(), from, to, amount, rate });
             localStorage.setItem('expat_exchanges', JSON.stringify(exchanges));
@@ -704,16 +754,53 @@
             document.getElementById('exc-amount').value = ''; document.getElementById('exc-rate').value = '';
         }
         function openSettings() {
+            vibrate();
             document.getElementById('settings-modal').classList.remove('hidden');
             document.getElementById('set-allowance-amount').value = config.allowanceAmount; document.getElementById('set-allowance-currency').value = config.allowanceCurrency;
             document.getElementById('set-tax-rate').value = config.taxRate; document.getElementById('set-rate-usd').value = config.rates.USD; document.getElementById('set-rate-twd').value = config.rates.TWD;
         }
         function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
         function saveSettings() {
+            vibrate(30);
             config.allowanceAmount = parseFloat(document.getElementById('set-allowance-amount').value); config.allowanceCurrency = document.getElementById('set-allowance-currency').value;
             config.taxRate = parseFloat(document.getElementById('set-tax-rate').value); config.rates.USD = parseFloat(document.getElementById('set-rate-usd').value); config.rates.TWD = parseFloat(document.getElementById('set-rate-twd').value);
             localStorage.setItem('expat_config', JSON.stringify(config));
             closeSettings(); updateUI();
+        }
+
+        // --- BACKUP & RESTORE ---
+        function exportData() {
+            const data = { config, transactions, exchanges };
+            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `expatflow_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(data.config && data.transactions) {
+                        localStorage.setItem('expat_config', JSON.stringify(data.config));
+                        localStorage.setItem('expat_transactions_pro', JSON.stringify(data.transactions));
+                        localStorage.setItem('expat_exchanges', JSON.stringify(data.exchanges || []));
+                        alert("Data Restored Successfully!");
+                        location.reload();
+                    } else {
+                        alert("Invalid backup file.");
+                    }
+                } catch(err) {
+                    alert("Error parsing file.");
+                }
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
